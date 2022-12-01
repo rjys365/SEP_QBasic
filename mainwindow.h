@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "program.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,7 +19,10 @@ public:
 private slots:
     void on_cmdLineEdit_editingFinished();
 
+    void on_btnClearCode_clicked();
+
 private:
     Ui::MainWindow *ui;
+    Program program;
 };
 #endif // MAINWINDOW_H

@@ -17,6 +17,17 @@ void MainWindow::on_cmdLineEdit_editingFinished()
 {
     QString cmd = ui->cmdLineEdit->text();
     ui->cmdLineEdit->setText("");
-
+    program.parseCommand(cmd);
+    ui->CodeDisplay->setText(program.dispLines());
+    /*
     ui->CodeDisplay->append(cmd);
+    ui->CodeDisplay->setText(program.dispLines());
+    */
+
 }
+
+void MainWindow::on_btnClearCode_clicked()
+{
+    ui->CodeDisplay->clear();
+}
+
