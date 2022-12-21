@@ -15,6 +15,9 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void chooseFile();
+    void errDialog(QString reason);
+    void helpDialog();
 
 private slots:
     void on_cmdLineEdit_editingFinished();

@@ -24,6 +24,8 @@ private:
 signals:
     void lineOutput(QString line);
     void error(QString reason);
+    void helpWindow();
+    void chooseFile();
 };
 
 #endif // PROGRAM_H
