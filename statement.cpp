@@ -139,7 +139,7 @@ std::shared_ptr<Statement> parseStatement(QStringList str,QString rawStr,Variabl
         if(str.length()!=thenPos+2)throw IllegalIfStatement();
         bool ok=true;
         int dest=str[str.length()-1].toInt(&ok);
-        if(!ok)throw IllegalIfStatement();
+        if(!ok||dest<0)throw IllegalIfStatement();
         std::shared_ptr<Exp> lExp,rExp;
         int opPos;CompOperator op;
         if(str.contains("=")){
