@@ -90,7 +90,7 @@ void MainWindow::askForInput(){
 }
 
 void MainWindow::on_btnRunCode_clicked(){
-    program.run();
+    program.parseCommand("RUN");
 }
 
 void MainWindow::on_btnLoadCode_clicked(){

@@ -115,6 +115,7 @@ void Program::parseCommand(QString cmd){
     }
     else{
         if(cmd=="RUN"){
+            reset();
             run();
         }
         else if(cmd=="LOAD"){
