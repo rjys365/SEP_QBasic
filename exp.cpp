@@ -49,6 +49,11 @@ std::shared_ptr<Exp> parseExp(QStringList str,VariablePool *vPool){
     try{
         for(auto it=str.cbegin();it!=str.cend();it++){
             const QString &curToken=*it;
+            if(it-str.cbegin()>0){
+                const QString &lastToken=*(it-1);
+                if(OP_MAP.contains(curToken)&&curToken!="("&&curToken!=")"
+                        &&OP_MAP.contains(lastToken)&&lastToken!="("&&lastToken!=")")throw ResolveExpFailure();
+            }
             if(OP_MAP.contains(curToken)){
                 auto curOp=OP_MAP[curToken];
                 //left bracket, push into stack
@@ -59,7 +64,12 @@ std::shared_ptr<Exp> parseExp(QStringList str,VariablePool *vPool){
                         std::shared_ptr<Exp> opr1,opr2;
                         opr2=numStack.top();numStack.pop();
                         if(numStack.empty()){//specially proceed "+x" pattern.
-                            if(topOp==PLUS||topOp==MINUS)numStack.push(std::make_shared<CompoundExp>(CompoundExp(topOp,nullptr,opr2)));
+                            if(topOp==PLUS||topOp==MINUS){
+                                int itPos=it-str.cbegin();
+                                int topOpPos=str.lastIndexOf(OPERATOR_STR[topOp],itPos);
+                                if(topOpPos==itPos-1)throw ResolveExpFailure();
+                                numStack.push(std::make_shared<CompoundExp>(CompoundExp(topOp,nullptr,opr2)));
+                            }
                             else throw ResolveExpFailure();
                         }
                         else{
@@ -75,7 +85,12 @@ std::shared_ptr<Exp> parseExp(QStringList str,VariablePool *vPool){
                         std::shared_ptr<Exp> opr1,opr2;
                         opr2=numStack.top();numStack.pop();
                         if(numStack.empty()){
-                            if(topOp==PLUS||topOp==MINUS)numStack.push(std::make_shared<CompoundExp>(CompoundExp(topOp,nullptr,opr2)));
+                            if(topOp==PLUS||topOp==MINUS){
+                                int itPos=it-str.cbegin();
+                                int topOpPos=str.lastIndexOf(OPERATOR_STR[topOp],itPos);
+                                if(topOpPos==itPos-1)throw ResolveExpFailure();
+                                numStack.push(std::make_shared<CompoundExp>(CompoundExp(topOp,nullptr,opr2)));
+                            }
                             else throw ResolveExpFailure();
                         }
                         else{
@@ -103,7 +118,11 @@ std::shared_ptr<Exp> parseExp(QStringList str,VariablePool *vPool){
             std::shared_ptr<Exp> opr1,opr2;
             opr2=numStack.top();numStack.pop();
             if(numStack.empty()){
-                if(topOp==PLUS||topOp==MINUS)numStack.push(std::make_shared<CompoundExp>(CompoundExp(topOp,nullptr,opr2)));
+                if(topOp==PLUS||topOp==MINUS){
+                    int topOpPos=str.lastIndexOf(OPERATOR_STR[topOp]);
+                    if(topOpPos==str.length()-1)throw ResolveExpFailure();
+                    numStack.push(std::make_shared<CompoundExp>(CompoundExp(topOp,nullptr,opr2)));
+                }
                 else throw ResolveExpFailure();
             }
             else{

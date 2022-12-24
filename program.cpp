@@ -50,7 +50,14 @@ void Program::modifyLine(int lineno,QString line){
         emit error(QString("Illegal GOTO statement found at line ")+QString::number(lineno)+".");
         return;
     }
-
+    catch(IllegalIfStatement){
+        emit error(QString("Illegal IF statement found at line ")+QString::number(lineno)+".");
+        return;
+    }
+    catch(IllegalEndStatement){
+        emit error(QString("Illegal END statement found at line ")+QString::number(lineno)+".");
+        return;
+    }
     catch(UnknownStatement){
         emit error(QString("Unknown statement found at line ")+QString::number(lineno)+".");
         return;
