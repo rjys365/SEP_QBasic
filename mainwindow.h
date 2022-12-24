@@ -15,14 +15,32 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    //prompt to choose a file to load.
     void chooseFile();
-    void errDialog(QString reason);
+
+    //raise an error dialog.
+    void errDialog(const QString &reason);
+
+    //raise a help dialog.
     void helpDialog();
+
+    //output a line to output area.
+    void outputLine(const QString &line);
+
+    //ask for Input in the command area.
+    void askForInput();
+
+    void refresh();
 
 private slots:
     void on_cmdLineEdit_editingFinished();
 
     void on_btnClearCode_clicked();
+
+    void on_btnRunCode_clicked();
+
+    void on_btnLoadCode_clicked();
 
 private:
     Ui::MainWindow *ui;
