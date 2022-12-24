@@ -14,6 +14,7 @@ Program::Program(QObject *parent)
 void Program::clear(){
     lines.clear();
     statements.clear();
+    semTrees.clear();
     vPool.clear();
     inputting=false;
     pc=0;
@@ -29,7 +30,8 @@ void Program::reset(){
 
 void Program::modifyLine(int lineno,QString line){
     try{
-        if(lines.contains(lineno))
+        if(line.simplified()==""){lines.remove(lineno);semTrees.remove(lineno);statements.remove(lineno);return;}
+        else if(lines.contains(lineno))
             statements[lineno]=parseStatement(tokenize(line),line,&vPool);
         else
             statements.insert(lineno,parseStatement(tokenize(line),line,&vPool));
@@ -105,8 +107,11 @@ void Program::parseCommand(QString cmd){
             emit error(tr("Unable to resolve line number!"));
             return;//TODO: error message
         }
-        auto insStr=cmd.mid(cmd.indexOf(' '));
-        modifyLine(num,insStr);
+        if(cmd.simplified()==QString::number(num))modifyLine(num,"");
+        else{
+            auto insStr=cmd.mid(cmd.indexOf(' '));
+            modifyLine(num,insStr);
+        }
     }
     else{
         if(cmd=="RUN"){
